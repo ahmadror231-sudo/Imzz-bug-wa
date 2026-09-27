@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bug WhatsApp UI</title>
+<style>
+:root{--bg:#10091e;--panel:#1b1030;--purple:#8b5cf6;--pink:#d946ef;--text:#f7f2ff;--muted:#b7a9ce}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;font-family:Inter,Segoe UI,Arial,sans-serif;color:var(--text);background:radial-gradient(circle at 20% 10%,#5b5b5b 0,transparent 25%),radial-gradient(circle at 80% 90%,#351010 0,transparent 28%),linear-gradient(145deg,#020202,#101010 55%,#050505);display:flex;justify-content:center;align-items:center;padding:18px}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;background-image:linear-gradient(#ffffff05 1px,transparent 1px),linear-gradient(90deg,#ffffff05 1px,transparent 1px);background-size:32px 32px;mask-image:linear-gradient(to bottom,black,transparent)}
+.app{width:100%;max-width:430px}
+.card{position:relative;overflow:hidden;background:linear-gradient(145deg,rgba(27,27,27,.99),rgba(5,5,5,.99));border:1px solid #666;border-radius:26px;padding:26px;box-shadow:0 24px 80px #0009, inset 0 1px #ffffff0d;backdrop-filter:blur(16px);animation:rise .5s ease}
+.card:before{content:"";position:absolute;top:0;left:12%;right:12%;height:1px;background:linear-gradient(90deg,transparent,#d8b4fe,transparent)}
+@keyframes rise{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.logo{width:68px;height:68px;margin:0 auto 16px;border:1px solid #ffffff24;border-radius:22px;display:grid;place-items:center;font-size:31px;background:linear-gradient(135deg,#333,#080808 55%,#8b1111);box-shadow:0 10px 35px #a855f766, inset 0 1px #ffffff55}
+h1{text-align:center;font-size:25px;margin:0 0 6px;letter-spacing:.3px}
+.subtitle{text-align:center;color:var(--muted);font-size:13px;margin:0 0 24px}
+label{display:block;font-size:12px;color:#d0d0d0;margin:15px 0 8px;font-weight:700;letter-spacing:.5px}
+input,select{width:100%;border:1px solid #414141;background:#0b0b0b;color:white;border-radius:12px;padding:14px;font-size:14px;outline:none}
+input:focus,select:focus{border-color:var(--purple);box-shadow:0 0 0 3px #8b5cf622}
+button{border:0;cursor:pointer;color:white;font-weight:800;letter-spacing:.3px;border-radius:12px;padding:14px 16px;background:linear-gradient(100deg,#7c3aed,#c026d3);box-shadow:0 8px 22px #8b5cf633;transition:.2s}
+button:active{transform:scale(.98)}
+button:hover{filter:brightness(1.12)}
+.primary{width:100%;margin-top:20px;background:linear-gradient(100deg,#252525,#0d0d0d 55%,#8b1111);box-shadow:0 8px 28px #9333ea44,inset 0 1px #ffffff38}
+.primary:hover{box-shadow:0 10px 32px #9333ea66;transform:translateY(-1px)}
+.hidden{display:none!important}
+.topline{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+.pill{font-size:10px;background:#211333;color:#d9baff;border:1px solid #68418b;padding:8px 11px;border-radius:99px;letter-spacing:.5px}
+.bigtitle{text-align:left;font-size:29px;line-height:1.05;margin:8px 0 5px;background:linear-gradient(90deg,#fff,#aaa,#777);color:transparent;background-clip:text}
+.welcome{font-size:12px;color:var(--muted);margin-bottom:22px}
+.section{font-size:11px;font-weight:800;color:#c9b4e8;letter-spacing:1.2px;margin:20px 0 8px}
+.options{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.option{background:linear-gradient(140deg,#1a1029,#130b20);border:1px solid #414141;border-radius:13px;padding:13px 11px;font-size:12px;display:flex;gap:8px;align-items:center;cursor:pointer;transition:transform .18s,border-color .18s,background .18s;user-select:none}
+.option:hover{transform:translateY(-2px);border-color:#777}
+.option input{accent-color:#a855f7;width:15px;height:15px;margin:0}
+.option:has(input:checked){border-color:#999;background:#292929;box-shadow:0 0 0 1px #ffffff18}
+.note{font-size:11px;line-height:1.5;color:#a995c3;margin-top:13px}
+.status{display:none;margin-top:14px;padding:12px;border-radius:12px;background:#202020;border:1px solid #555;font-size:12px;line-height:1.5}
+.status.show{display:block;animation:pop .25s ease}
+.status.centered{text-align:center;padding:22px}
+#result.status.show{position:fixed;z-index:9999;left:50%;top:50%;transform:translate(-50%,-50%);width:calc(100% - 40px);max-width:340px;margin:0;background:linear-gradient(145deg,#291544,#160d26);border:1px solid #a855f7;border-radius:20px;box-shadow:0 0 0 9999px #05020bb8,0 18px 70px #a855f744;animation:modalIn .22s ease}
+@keyframes modalIn{from{opacity:0;scale:.92}to{opacity:1;scale:1}}
+.footer{text-align:center;color:#777;font-size:10px;margin-top:16px}
+@keyframes pop{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:360px){.card{padding:20px}.options{grid-template-columns:1fr}.bigtitle{font-size:26px}}
+</style>
+</head>
+<body>
+<main class="app">
+  <section class="card" id="loginCard">
+    <div class="logo">⚡</div>
+    <h1>WELCOME TO THE DARK</h1>
+    <p class="subtitle">IMZZ PBLOW 👿👿 • PRIVATE PANEL</p><div style="text-align:center;color:#9b3030;font-size:10px;letter-spacing:2px;margin:-10px 0 20px;text-shadow:0 0 8px #7d1111">SYSTEM LOCKED • AUTH REQUIRED</div>
+    <form id="loginForm">
+      <label for="username">USERNAME</label>
+      <input id="username" placeholder="Masukkan username" autocomplete="username" required>
+      <label for="password">PASSWORD</label>
+      <input id="password" type="password" placeholder="Masukkan password" autocomplete="current-password" required>
+      <button class="primary" type="submit">LOGIN SEKARANG　→</button>
+    </form>
+    <div class="status" id="loginStatus"></div>
+    <div class="footer">DEV: imzz pblow</div>
+  </section>
+
+  <section class="card hidden" id="dashboard">
+    <div class="topline"><span class="pill">● SYSTEM ONLINE</span><button id="logout" style="padding:8px 11px;font-size:11px">LOGOUT</button></div>
+    <div style="font-size:11px;color:#b99adf;letter-spacing:2px;font-weight:800">CONTROL PANEL</div>
+    <h2 class="bigtitle">Bug<br>WhatsApp</h2>
+    <div class="welcome">Selamat datang di dashboard.</div>
+    <label for="target">NOMOR TARGET</label>
+    <input id="target" inputmode="numeric" maxlength="15" placeholder="08xxxxxxxxxx">
+    <div class="section">SELECT BUG MODE</div>
+    <div class="options" id="options">
+      <label class="option"><input type="radio" name="bug" value="Crash UI">Crash UI</label>
+      <label class="option"><input type="radio" name="bug" value="Permanent Bug">Permanent Bug</label>
+      <label class="option"><input type="radio" name="bug" value="24 Jam Bug">24 Jam Bug</label>
+      <label class="option"><input type="radio" name="bug" value="Delay UI">Delay UI</label>
+      <label class="option"><input type="radio" name="bug" value="Freeze Effect">Freeze Effect</label>
+      <label class="option"><input type="radio" name="bug" value="Ghost Mode">Ghost Mode</label>
+      <label class="option"><input type="radio" name="bug" value="UI Glitch">UI Glitch</label>
+      <label class="option"><input type="radio" name="bug" value="Lag Effect">Lag Effect</label>
+      <label class="option"><input type="radio" name="bug" value="Visual Loop">Visual Loop</label>
+      <label class="option"><input type="radio" name="bug" value="White Screen">White Screen</label>
+      <label class="option"><input type="radio" name="bug" value="Reset Handphone Target">Reset Handphone Target</label>
+      <label class="option"><input type="radio" name="bug" value="Spam OTP">Spam OTP</label>
+    </div>
+    <button class="primary" id="runBtn">TEKAN OKE　⚡</button>
+    <div class="status" id="result"></div>
+    <p class="note">DEV: imzz pblow</p>
+    <div class="footer">DEV: imzz pblow</div>
+  </section>
+</main>
+<script>
+const loginForm=document.getElementById('loginForm');
+const loginStatus=document.getElementById('loginStatus');
+loginForm.addEventListener('submit',e=>{
+  e.preventDefault();
+  const u=document.getElementById('username').value.trim();
+  const p=document.getElementById('password').value;
+  if(u==='imzzbug'&&p==='imzzbug55'){
+    loginStatus.className='status show';
+    loginStatus.textContent='✓ Login berhasil! Membuka dashboard…';
+    setTimeout(()=>{document.getElementById('loginCard').classList.add('hidden');document.getElementById('dashboard').classList.remove('hidden')},650);
+  }else{
+    loginStatus.className='status show';
+    loginStatus.textContent='✕ Username atau password salah. Coba imzzbug / imzzbug55.';
+  }
+});
+document.getElementById('logout').addEventListener('click',()=>{
+  document.getElementById('dashboard').classList.add('hidden');
+  document.getElementById('loginCard').classList.remove('hidden');
+  loginForm.reset();loginStatus.className='status';
+});
+document.getElementById('runBtn').addEventListener('click',()=>{
+  const target=document.getElementById('target').value.trim();
+  const bug=document.querySelector('input[name="bug"]:checked');
+  const result=document.getElementById('result');
+  result.className='status show centered';
+  if(!/^08\d{7,13}$/.test(target)){result.textContent='⚠️ Masukkan nomor dengan format 08xxxxxxxxxx.';return;}
+  if(!bug){result.textContent='⚠️ Pilih salah satu mode terlebih dahulu.';return;}
+  result.innerHTML='<div style="font-size:20px;font-weight:800;margin-bottom:14px">BERHASIL BUG NOMOR TARGET</div><div style="font-size:15px;margin-bottom:14px">'+target+'</div><button type="button" id="okResult" style="margin-top:4px;padding:10px 30px">Oke</button>';
+  document.getElementById('okResult').addEventListener('click',()=>{result.className='status';result.textContent='';});
+});
+</script>
+</body>
+</html>
